@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+  client_envoyeur:
+    build: ./client_envoyeur
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  client_lecteur:
+    build: ./client_lecteur
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  worker_add:
+    build: ./worker
+    command: ["python", "worker.py", "add"]
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  worker_sub:
+    build: ./worker
+    command: ["python", "worker.py", "sub"]
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  worker_mul:
+    build: ./worker
+    command: ["python", "worker.py", "mul"]
+    depends_on:
+      - rabbitmq
+    restart: always
+
+  worker_div:
+    build: ./worker
+    command: ["python", "worker.py", "div"]
+    depends_on:
+      - rabbitmq
+    restart: always
+    
+  client_user:
+    build: ./client_user
+    depends_on:
+      - rabbitmq
+    restart: always
+    stdin_open: true
+    tty: true

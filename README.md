@@ -85,3 +85,8 @@ Modifier
 ├── requirements.txt
 └── README.md
 ```
+
+Projet fait par 
+Charles Mangin
+Nikola Zivkvic
+Adam El Oounissi
